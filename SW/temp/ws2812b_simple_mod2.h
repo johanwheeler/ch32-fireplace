@@ -50,11 +50,11 @@ void WS2812BSimpleSend( GPIO_TypeDef * port, int pin, const uint16_t * data, int
 		uint16_t byte = *data;
 
 		uint32_t bits = (uint32_t)byte;
-		uint32_t blue = (bits & 0x001F);     		// 5 bits blue  ............bbbbb -> 000bbbbb
-		uint32_t green = (bits & 0x07E0) >> 5;    	// 6 bits green .....ggg ggg..... -> 00gggggg
-		uint32_t red = (bits & 0xF800) >> 11;      	// 5 bits red   rrrrr... ........ -> 000rrrrr
+		uint32_t blue = (bits & 0x001F) << 3;     	// 5 bits blue  ............bbbbb -> bbbbb000
+		uint32_t green = (bits & 0x07E0) >> 3;    	// 6 bits green .....ggg ggg..... -> gggggg00
+		uint32_t red = (bits & 0xF800) >> 8;      	// 5 bits red   rrrrr... ........ -> rrrrr000
 		
-		uint32_t expanded = (green/30 << (16+2)) | (red/30 << (8+3)) | (blue/30 << 3) | 0x00000000; // divide by 30 to reduce brightness
+		uint32_t expanded = (green/16 << (16)) | (red/16 << (8)) | (blue/16) | 0x00000000; // divide by 30 to reduce brightness
 
 		int i;
 		for( i = 0; i < 24; i++ )
