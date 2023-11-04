@@ -9,7 +9,7 @@
       (effects (font (size 1 1) (thickness 0.15)))
     (tstamp 171f7984-738f-417d-8ca8-e46c436f2312)
   )
-  (pad "5" smd custom (at 0 3.6) (size 2.286 2.286) (layers "F.Cu" "F.Paste" "F.Mask")
+  (pad "1" smd custom (at 0 3.6) (size 2.286 2.286) (layers "F.Cu" "F.Paste")
     (thermal_bridge_angle 45)
     (options (clearance outline) (anchor circle))
     (primitives
