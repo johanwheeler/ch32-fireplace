@@ -21,4 +21,9 @@
     (thermal_bridge_angle 45) (tstamp 4e3acdb8-525a-4def-94b9-9d5b2bc7fab8))
   (pad "2" smd roundrect (at 1.6 0) (size 1.8 2.6) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25)
     (thermal_bridge_angle 45) (tstamp 43374f1e-4b2d-4952-82f1-2619f81c3ad4))
+  (model "${KIPRJMOD}/fp.pretty/photo_GT36528.step"
+    (offset (xyz 0 0 0))
+    (scale (xyz 1 1 1))
+    (rotate (xyz -90 0 90))
+  )
 )

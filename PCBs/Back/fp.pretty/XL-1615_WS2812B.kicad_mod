@@ -25,4 +25,9 @@
     (thermal_bridge_angle 45) (tstamp a3cf729a-6287-4aae-9af4-7149ef058517))
   (pad "4" smd roundrect (at 0.625 0.425) (size 0.45 0.65) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25)
     (thermal_bridge_angle 45) (tstamp d64351bd-c80a-4ec3-a0e9-1b380f5ad82f))
+  (model "${KIPRJMOD}/fp.pretty/led_C191KRKT.step"
+    (offset (xyz 0 0 0))
+    (scale (xyz 1 1 1))
+    (rotate (xyz -90 0 0))
+  )
 )
