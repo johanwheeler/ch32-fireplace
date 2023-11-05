@@ -2436,6 +2436,18 @@
     )
   )
 
+  (gr_arc (start 118.327356 71.991842) (mid 117.724671 69.871479) (end 119.507368 68.574884)
+    (stroke (width 0.6) (type default)) (layer "F.SilkS") (tstamp 03193f41-b62c-4ef8-b266-95999c3a4b7a))
+  (gr_arc (start 133.2 71.991842) (mid 132.597315 69.871479) (end 134.380012 68.574884)
+    (stroke (width 0.6) (type default)) (layer "F.SilkS") (tstamp 3d90f708-2212-4ab3-9954-4205ef6f9ba3))
+  (gr_arc (start 112.994679 71.55) (mid 114.725 72.569975) (end 115.555859 74.398645)
+    (stroke (width 0.6) (type default)) (layer "F.SilkS") (tstamp 41561a0d-b16b-41df-8d4a-56c65b4df1ee))
+  (gr_arc (start 147.782677 71.991842) (mid 147.179992 69.871479) (end 148.962689 68.574884)
+    (stroke (width 0.6) (type default)) (layer "F.SilkS") (tstamp 81e56702-31cb-42ab-a4cb-3311f8304e4f))
+  (gr_arc (start 127.867323 71.55) (mid 129.597644 72.569975) (end 130.428503 74.398645)
+    (stroke (width 0.6) (type default)) (layer "F.SilkS") (tstamp 8f6c7e26-41a6-42c2-aa8a-f368e8d43af6))
+  (gr_arc (start 142.45 71.55) (mid 144.180321 72.569975) (end 145.01118 74.398645)
+    (stroke (width 0.6) (type default)) (layer "F.SilkS") (tstamp f623d91d-ae4f-458b-ab4b-6e59f4c75356))
   (gr_line locked (start 161.7 131.1) (end 161.7 136.9)
     (stroke (width 0.2) (type solid)) (layer "Cmts.User") (tstamp 2886f185-6b43-4a52-a499-4e0631f74bf2))
   (gr_line locked (start 100.5 109.5) (end 99.5 110.5)
@@ -2618,6 +2630,15 @@
     (stroke (width 0.2) (type solid)) (layer "Edge.Cuts") (tstamp fd5be2a9-9040-477f-a79f-6d9d3d976c44))
   (gr_text "JLCJLCJLCJLC" (at 154.8 139.8) (layer "B.SilkS") (tstamp 42a738bf-2789-456f-b46e-e74a480f2314)
     (effects (font (size 1 1) (thickness 0.2) bold) (justify left bottom mirror))
+  )
+  (gr_text "A" (at 115.95 69.35 18.2) (layer "F.SilkS") (tstamp 49ec08d5-e656-4d43-847a-1782c7007df5)
+    (effects (font (size 3 3) (thickness 0.7) bold) (justify left bottom))
+  )
+  (gr_text "J" (at 145.3 69.6 18.2) (layer "F.SilkS") (tstamp 797a80d1-fbcd-4ee2-98fd-358435868ca8)
+    (effects (font (size 3 3) (thickness 0.7) bold) (justify left bottom))
+  )
+  (gr_text "D" (at 130.625 69.45 18.2) (layer "F.SilkS") (tstamp f99cc96e-3496-4fb1-8418-dffe0bcd1150)
+    (effects (font (size 3 3) (thickness 0.7) bold) (justify left bottom))
   )
 
   (segment (start 159.785 134.185) (end 157.585 134.185) (width 0.25) (layer "F.Cu") (net 1) (tstamp 0cd3d2a7-86fe-4457-aa38-c167343ef3d8))
@@ -9036,6 +9057,24 @@
         (xy 105.124 88)
         (xy 154.876 88)
       )
+    )
+  )
+  (group "" (id aef1821a-1285-4767-9257-9d13276847a0)
+    (members
+      3d90f708-2212-4ab3-9954-4205ef6f9ba3
+      8f6c7e26-41a6-42c2-aa8a-f368e8d43af6
+    )
+  )
+  (group "" (id f5a53e1a-015c-44fa-8774-b31063921f9c)
+    (members
+      81e56702-31cb-42ab-a4cb-3311f8304e4f
+      f623d91d-ae4f-458b-ab4b-6e59f4c75356
+    )
+  )
+  (group "" (id f70a9f7e-96a4-4135-be7c-e680fd04e2a6)
+    (members
+      03193f41-b62c-4ef8-b266-95999c3a4b7a
+      41561a0d-b16b-41df-8d4a-56c65b4df1ee
     )
   )
 )
