@@ -3,7 +3,7 @@
 
 
 #define WS2812BSIMPLE_IMPLEMENTATION
-#define WS2812BSIMPLE_NO_IRQ_TWEAKING
+//#define WS2812BSIMPLE_NO_IRQ_TWEAKING
 #include "ws2812b_simple_mod2.h"
 
 #include "frames.h"
@@ -26,7 +26,6 @@ int main()
 {
 	SystemInit();
 
-
 	// Enable GPIOs
 	RCC->APB2PCENR |= RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOC;
 
@@ -48,7 +47,7 @@ int main()
 	 
 	t2pwm_init();
 
-    systick_init();
+    //systick_init();
 
 	while(1)
 	{
