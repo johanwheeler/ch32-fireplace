@@ -12,9 +12,9 @@
 #define SYSTICK_CTLR_SWIE (1 << 31)
 
 #define TIM2_DEFAULT 0xff
+#define PRESCALE_DIV4 0x03
 
-volatile uint32_t systick_cnt;
-volatile uint32_t tim_cnt = 0;
+volatile uint32_t ms_cnt = 0;
 volatile uint16_t k = 0;
 
 unsigned int freqz[] = {
@@ -55,10 +55,10 @@ void t2pwm_init(void)
 
     // SMCFGR: default clk input is CK_INT
     // set TIM2 clock prescaler divider
-    TIM2->PSC = 3;
+    TIM2->PSC = PRESCALE_DIV4;
     // set PWM total cycle width
-    TIM2->ATRLR = 512;
-    TIM2->CH3CVR = 255;
+    TIM2->ATRLR = 1023;
+    TIM2->CH3CVR = 1024;
 
     // for channel 1 and 2, let CCxS stay 00 (output), set OCxM to 110 (PWM I)
     // enabling preload causes the new pulse width in compare capture register only to come into effect when UG bit in SWEVGR is set (= initiate update) (auto-clears)
@@ -94,7 +94,7 @@ void systick_init(void)
 
     /* Start at zero */
     SysTick->CNT = 0;
-    systick_cnt = 0;
+    ms_cnt = 0;
 
     /* Enable SysTick counter, IRQ, HCLK/1 */
     SysTick->CTLR = SYSTICK_CTLR_STE | SYSTICK_CTLR_STIE |
@@ -104,15 +104,22 @@ void systick_init(void)
 void tone(uint32_t freq) {
     // ATRLR = clock/(freqz*prescaler)
     if(freq == 0){
-        TIM2->ATRLR = (uint16_t)1024;
-        TIM2->CH3CVR = 1023;
-        TIM2->SWEVGR |= TIM_UG;
+        // If timer period (ATRLR) < compare value (CH3CVR), then PWM = 0
+        TIM2->ATRLR = (uint16_t) 1023;
+        TIM2->CH3CVR = (uint16_t) 1024;
+
+        // Initiate timer update
+        TIM2->SWEVGR |= TIM_UG;             
         return;
     }
 
-    uint16_t per = FUNCONF_SYSTEM_CORE_CLOCK / (freq * 4);
-    TIM2->ATRLR = (uint16_t)per;
-    TIM2->CH3CVR = per / 2;
+    uint16_t period = FUNCONF_SYSTEM_CORE_CLOCK / (freq * (PRESCALE_DIV4 + 1));
+    TIM2->ATRLR = (uint16_t) period;
+
+    // Set compare value to half the period for 50% duty cycle
+    TIM2->CH3CVR = (uint16_t) period / 2;
+
+    // Initiate timer update     
     TIM2->SWEVGR |= TIM_UG;
 }
 
@@ -129,19 +136,15 @@ void SysTick_Handler(void)
     // interrupt.
     SysTick->CMP += (FUNCONF_SYSTEM_CORE_CLOCK / 1000);
 
-    /* clear IRQ */
+    // clear IRQ
     SysTick->SR = 0;
 
-    /* update counter */
-    systick_cnt++;
-    tim_cnt++;
+    // increment milisecond counter 
+    ms_cnt++;
 
-    if (tim_cnt > curr_song[k].duration)
+    if (ms_cnt > curr_song[k].duration)
     {
-        tim_cnt = 0;
-
-        // Set timer freq here!
-        // printf("note: %u \n", curr_song[k].note);
+        ms_cnt = 0; 
 
         if (curr_song[k + 1].note == 0)
         {
@@ -152,11 +155,6 @@ void SysTick_Handler(void)
             tone(freqz[curr_song[k + 1].note - 1]);
         }
 
-        // TIM2->ATRLR = 256;
-        // TIM2->CH3CVR = 128;
-        // TIM2->SWEVGR |= TIM_UG;
-
-        // set correct note length here!
         k++;
         k = k % (note_end - 1);
     }
