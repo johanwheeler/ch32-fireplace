@@ -3,7 +3,7 @@
 
 #define WS2812BSIMPLE_IMPLEMENTATION
 //#define WS2812BSIMPLE_NO_IRQ_TWEAKING
-#include "ws2812b_simple_mod2.h"
+#include "screen.h"
 
 #include "frames.h"
 
@@ -13,12 +13,6 @@
 
 #include "buttons.h"
 
-// Pinouts
-#define NEO_PORT GPIOD
-#define NEO_PIN 0
-
-#define BUZZ_PORT GPIOC
-#define BUZZ_PIN 0
 
 #define TOUCH_PORT GPIOD
 #define TOUCH_1_PIN 2
@@ -45,9 +39,7 @@ int main()
 	// Enable GPIOs
 	RCC->APB2PCENR |= RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOC;
 
-	// Neopixel pin push-pull
-	NEO_PORT->CFGLR &= ~(0xf<<(4*NEO_PIN));
-	NEO_PORT->CFGLR |= (GPIO_Speed_10MHz | GPIO_CNF_OUT_PP)<<(4*NEO_PIN);
+	screen_init();
 
 	// init TIM2 peripheral 
 	//t2pwm_init();
@@ -60,7 +52,7 @@ int main()
 	printf("done.\n\r");
 
 	printf("initializing capacitive buttons");
-	init_buttons();
+	buttons_init();
 	printf("done.\n\r");
 
 	Delay_Ms(1000);
@@ -79,7 +71,7 @@ int main()
 
 		// read buttons every x ms
 		if(t%200 == 0){
-			buttonPress_t p = readButtons();
+			buttonPress_t p = buttons_read();
 
 			if (p != last_button)
 			{
@@ -107,16 +99,16 @@ int main()
 
 		// Change fire frame
 		if((t%300 == 0) && (screen == screenFire)){
-			WS2812BSimpleSend(NEO_PORT, NEO_PIN, snowman[2], 64);
+			screen_write(snowman[2]);
 		}
 
 		// Change animation frame
 		if((t%500 == 0) && (screen == screenAnimation)){
-			WS2812BSimpleSend(NEO_PORT, NEO_PIN, tree, 64);
+			screen_write(tree);
 		}
 
 		if((t%500 == 0) && (screen == screenSanta)){
-			WS2812BSimpleSend(NEO_PORT, NEO_PIN, santa, 64);
+			screen_write(santa);
 		}
 
 

@@ -82,15 +82,14 @@ int MeasureTouch(int portno, int pin, int pu_mode)
     return endtime - starttime;
 }
 
-void init_buttons(){
-    RCC->APB2PCENR |= RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOA |
-                      RCC_APB2Periph_AFIO;
+void buttons_init(){
+    RCC->APB2PCENR |= RCC_APB2Periph_GPIOD | RCC_APB2Periph_AFIO;
 
     // enable pin-change-interrupt.
     NVIC_EnableIRQ(EXTI7_0_IRQn);
 }
 
-buttonPress_t readButtons() {
+buttonPress_t buttons_read() {
     buttonPress_t read = buttonNone;
 
     int thr = 250;

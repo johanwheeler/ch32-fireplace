@@ -8,4 +8,9 @@
 #define FUNCONF_USE_UARTPRINTF 1
 #define FUNCONF_UART_PRINTF_BAUD 115200
 
+// Project specific defines
+
+#define SCREEN_GPIO_PORT GPIOD
+#define SCREEN_GPIO_PIN 0
+
 #endif
