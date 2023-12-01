@@ -44,7 +44,6 @@ void WS2812BSimpleSend( GPIO_TypeDef * port, int pin, const uint16_t * data, int
 
 	port->BSHR = maskoff;
 
-	const uint16_t * end = data + len_in_bytes;
 	int pix = 0;
 	while( pix != 64 )
 	{

@@ -10,7 +10,7 @@ typedef enum {
     buttonSound = 0x1,
     buttonNext = 0x2,
     buttonPresent = 0x4,
-} buttonPress;
+} buttonPress_t;
 
 void EXTI7_0_IRQHandler(void) __attribute__((interrupt));
 void EXTI7_0_IRQHandler(void)
@@ -90,8 +90,8 @@ void init_buttons(){
     NVIC_EnableIRQ(EXTI7_0_IRQn);
 }
 
-buttonPress readButtons() {
-    buttonPress read = buttonNone;
+buttonPress_t readButtons() {
+    buttonPress_t read = buttonNone;
 
     int thr = 250;
 

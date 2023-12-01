@@ -25,19 +25,18 @@
 #define TOUCH_2_PIN 3
 #define TOUCH_3_PIN 4
 
-enum ScreenState {
-	Fire,
-	Animation,
-	Santa,
-};
+typedef enum
+{
+	screenFire,
+	screenAnimation,
+	screenSanta,
+} ScreenState_t;
 
-uint8_t AnimationNumber;
-
-enum SoundState {
+typedef enum
+{
 	Mute,
 	Sound,
-};
-
+} SoundState_t;
 
 int main()
 {
@@ -66,42 +65,61 @@ int main()
 
 	Delay_Ms(1000);
 
-	int i = 0;
+	buttonPress_t last_button = buttonNone;
+	uint8_t animationNumber = 0;
+	uint8_t animationFrameNumber = 0;
+	ScreenState_t screen = screenFire;
+	SoundState_t sound = Mute;
+	uint32_t t = 0;
 
 	while(1)
 	{
+		Delay_Ms(1);
+		t++;
 
-		buttonPress p = readButtons();
+		// read buttons every x ms
+		if(t%200 == 0){
+			buttonPress_t p = readButtons();
 
-		switch (p)
-		{
-		case buttonNext:
-			printf("Next");
-			i = 0;
-			break;
-		case buttonPresent:
-			printf("Present");
-			i = 1;
-			break;
-		case buttonSound:
-			printf("Sound");
-			i = 2;
-			break;
-		default:
-			break;
+			if (p != last_button)
+			{
+				switch (p)
+				{
+				case buttonNext:
+					printf("Next");
+					screen = screenFire;
+					break;
+				case buttonPresent:
+					printf("Present");
+					screen = screenSanta;
+					break;
+				case buttonSound:
+					printf("Sound");
+					screen = screenAnimation;
+					break;
+				default:
+					break;
+				}
+
+				last_button = p;
+			}
 		}
-		Delay_Ms(10);
+
+		// Change fire frame
+		if((t%300 == 0) && (screen == screenFire)){
+			WS2812BSimpleSend(NEO_PORT, NEO_PIN, snowman[2], 64);
+		}
+
+		// Change animation frame
+		if((t%500 == 0) && (screen == screenAnimation)){
+			WS2812BSimpleSend(NEO_PORT, NEO_PIN, tree, 64);
+		}
+
+		if((t%500 == 0) && (screen == screenSanta)){
+			WS2812BSimpleSend(NEO_PORT, NEO_PIN, santa, 64);
+		}
+
 
 		
-		// WS2812BSimpleSend(GPIOC, 6, santa, 64);
-		//for(uint8_t i = 0; i < 3; i++){
-		WS2812BSimpleSend(NEO_PORT, NEO_PIN, tree, 64);
-		//	printf( "adc: %d\n", adc_get() );
-		//	Delay_Ms( 200 );
-			
-		//}
-		
-		//printf( "Hello World!\n");
-		// Delay_Ms( 1000 );
 	}
 }
