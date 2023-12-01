@@ -14,8 +14,8 @@
 #define TIM2_DEFAULT 0xff
 #define PRESCALE_DIV4 0x03
 
-volatile uint32_t ms_cnt = 0;
-volatile uint16_t k = 0;
+volatile uint16_t ms_cnt = 0;
+volatile uint8_t k = 0;
 
 unsigned int freqz[] = {
     261, 277, 293, 311, 329, 349, 369, 391, 415, 440, 466, 493,

@@ -45,10 +45,17 @@ void WS2812BSimpleSend( GPIO_TypeDef * port, int pin, const uint16_t * data, int
 	port->BSHR = maskoff;
 
 	const uint16_t * end = data + len_in_bytes;
-	while( data != end )
+	int pix = 0;
+	while( pix != 64 )
 	{
-		uint16_t byte = *data;
-
+		// reverse every other row
+		uint16_t byte;
+		if(pix%16 < 8){
+			byte = *(data + (pix/8)*8 + 7 - pix%16);
+		}else{
+			byte = *(data + pix);
+		}
+		
 		uint32_t bits = (uint32_t)byte;
 		uint32_t blue = (bits & 0x001F) << 3;     		// 5 bits blue  ............bbbbb -> 000bbbbb
 		uint32_t green = (bits & 0x07E0) >> 3;    	// 6 bits green .....ggg ggg..... -> 00gggggg
@@ -84,7 +91,7 @@ void WS2812BSimpleSend( GPIO_TypeDef * port, int pin, const uint16_t * data, int
 			expanded <<= 1;
 		}
 
-		data++;
+		pix++;
 	}
 
 	port->BSHR = maskoff;

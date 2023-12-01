@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef _FUNCONFIG_H
 #define _FUNCONFIG_H
 

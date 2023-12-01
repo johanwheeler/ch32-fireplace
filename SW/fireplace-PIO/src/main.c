@@ -11,6 +11,8 @@
 
 #include "photores.h"
 
+#include "buttons.h"
+
 // Pinouts
 #define NEO_PORT GPIOD
 #define NEO_PIN 0
@@ -22,6 +24,19 @@
 #define TOUCH_1_PIN 2
 #define TOUCH_2_PIN 3
 #define TOUCH_3_PIN 4
+
+enum ScreenState {
+	Fire,
+	Animation,
+	Santa,
+};
+
+uint8_t AnimationNumber;
+
+enum SoundState {
+	Mute,
+	Sound,
+};
 
 
 int main()
@@ -45,16 +60,46 @@ int main()
 	adc_init();
 	printf("done.\n\r");
 
+	printf("initializing capacitive buttons");
+	init_buttons();
+	printf("done.\n\r");
+
+	Delay_Ms(1000);
+
+	int i = 0;
+
 	while(1)
 	{
 
-		// WS2812BSimpleSend(GPIOC, 6, santa, 64);
-		for(uint8_t i = 0; i < 3; i++){
-			//WS2812BSimpleSend(NEO_PORT, NEO_PIN, snowman[i], 64);
-			printf( "adc: %d\n", adc_get() );
-			Delay_Ms( 200 );
-			
+		buttonPress p = readButtons();
+
+		switch (p)
+		{
+		case buttonNext:
+			printf("Next");
+			i = 0;
+			break;
+		case buttonPresent:
+			printf("Present");
+			i = 1;
+			break;
+		case buttonSound:
+			printf("Sound");
+			i = 2;
+			break;
+		default:
+			break;
 		}
+		Delay_Ms(10);
+
+		
+		// WS2812BSimpleSend(GPIOC, 6, santa, 64);
+		//for(uint8_t i = 0; i < 3; i++){
+		WS2812BSimpleSend(NEO_PORT, NEO_PIN, tree, 64);
+		//	printf( "adc: %d\n", adc_get() );
+		//	Delay_Ms( 200 );
+			
+		//}
 		
 		//printf( "Hello World!\n");
 		// Delay_Ms( 1000 );
