@@ -107,8 +107,11 @@ int main()
 			screen_write(tree);
 		}
 
-		if((t%500 == 0) && (screen == screenSanta)){
-			screen_write(santa);
+		if((t%300 == 0) && (screen == screenSanta)){
+			screen_write(santa+animationFrameNumber*64);
+			animationFrameNumber++;
+			animationFrameNumber = animationFrameNumber%15;
+
 		}
 
 
