@@ -13,17 +13,11 @@
 
 #include "buttons.h"
 
-
-#define TOUCH_PORT GPIOD
-#define TOUCH_1_PIN 2
-#define TOUCH_2_PIN 3
-#define TOUCH_3_PIN 4
-
 typedef enum
 {
 	screenFire,
 	screenAnimation,
-	screenSanta,
+	screenPresent,
 } ScreenState_t;
 
 typedef enum
@@ -75,19 +69,48 @@ int main()
 
 			if (p != last_button)
 			{
+			    int switchScreen = 0;
+				ScreenState_t newScreen = screenFire;
 				switch (p)
 				{
 				case buttonNext:
 					printf("Next");
-					screen = screenFire;
-					break;
+					switch (screen)
+					{
+					case screenAnimation:
+						animationNumber++;
+						animationFrameNumber = 0;
+						if(animationNumber >= (sizeof(animations)/sizeof(animation_t))){
+							screen = screenFire;
+						}
+						printf("animation number: %d", animationNumber);
+						break;
+					case screenFire:
+						screen = screenAnimation;
+						animationNumber = 0;
+						animationFrameNumber = 0;
+						break;
+					case screenPresent:
+						screen = screenFire;
+						break;
+					}
+				break;
 				case buttonPresent:
 					printf("Present");
-					screen = screenSanta;
+					switch (screen)
+					{
+					case screenFire:
+					case screenAnimation:
+						screen = screenPresent;
+						animationFrameNumber = 0;
+						break;
+					default:
+						screen = screenFire;
+						break;
+					}
 					break;
 				case buttonSound:
 					printf("Sound");
-					screen = screenAnimation;
 					break;
 				default:
 					break;
@@ -99,19 +122,19 @@ int main()
 
 		// Change fire frame
 		if((t%300 == 0) && (screen == screenFire)){
-			screen_write(snowman[2]);
+			screen_write(reindeer);
 		}
 
 		// Change animation frame
-		if((t%500 == 0) && (screen == screenAnimation)){
-			screen_write(tree);
+		if((t%250 == 0) && (screen == screenAnimation)){
+			screen_write(animations[animationNumber].data + animationFrameNumber*64);
+			animationFrameNumber = (animationFrameNumber+1) % animations[animationNumber].numframes;
 		}
 
-		if((t%300 == 0) && (screen == screenSanta)){
+		if((t%250 == 0) && (screen == screenPresent)){
 			screen_write(santa+animationFrameNumber*64);
 			animationFrameNumber++;
 			animationFrameNumber = animationFrameNumber%15;
-
 		}
 
 

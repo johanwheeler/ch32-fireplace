@@ -16,6 +16,6 @@
 
 void screen_init(void);
 
-void screen_write(uint16_t *data);
+void screen_write(const uint16_t *data);
 
 #endif

@@ -6,7 +6,7 @@ void screen_init() {
     SCREEN_GPIO_PORT->CFGLR |= (GPIO_Speed_2MHz | GPIO_CNF_OUT_PP) << (4 * SCREEN_GPIO_PIN);
 };
 
-void screen_write(uint16_t *data) {
+void screen_write(const uint16_t *data) {
 
     int maskon = 1 << SCREEN_GPIO_PIN;
     int maskoff = 1 << (16 + SCREEN_GPIO_PIN);
