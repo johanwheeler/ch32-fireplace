@@ -57,11 +57,21 @@ void fire_draw() {
         if(green > 255) green = 255;
         if(blue > 255) blue = 255;
 
-        color[i] = ((red << 8) & 0xF800) | ((green << 3) & 0x07E0)  | ((blue >> 3) & 0x001F);
+        // flip row and column
+        int j = i % 8;
+        int k = 7 - i / 8;
+
+        color[j*8+k] = ((red << 8) & 0xF800) | ((green << 3) & 0x07E0)  | ((blue >> 3) & 0x001F);
     }
 
     // draw fire
     screen_write(color);
+}
+
+void fire_reset(){
+    for (int i = 0; i < 64; i++) {
+        fire_temps[i] = 0;
+    }
 }
 
 uint32_t fire_random() {

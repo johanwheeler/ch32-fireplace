@@ -95,6 +95,7 @@ int main()
 						animationNumber++;
 						animationFrameNumber = 0;
 						if(animationNumber >= (sizeof(animations)/sizeof(animation_t))){
+							fire_reset();
 							screen = screenFire;
 						}
 						printf("animation number: %d", animationNumber);
@@ -106,6 +107,7 @@ int main()
 						break;
 					case screenPresent:
 						screen = screenFire;
+						fire_reset();			
 						break;
 					}
 				break;
@@ -120,7 +122,7 @@ int main()
 						break;
 					default:
 						screen = screenFire;
-						animationFrameNumber = 0;
+						fire_reset();
 						break;
 					}
 					break;
@@ -136,7 +138,7 @@ int main()
 		}
 
 		// Change fire frame
-		if((t%20 == 0) && (screen == screenFire)){
+		if((t%32 == 0) && (screen == screenFire)){
 			fire_draw();
 		}
 
