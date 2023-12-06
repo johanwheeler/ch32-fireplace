@@ -26,6 +26,17 @@ typedef enum
 	Sound,
 } SoundState_t;
 
+// xorshift random
+
+unsigned int rand = 1212;
+
+unsigned int newRandom(){
+	rand ^= rand << 13;
+	rand ^= rand >> 17;
+	rand ^= rand << 5;
+	return rand;
+}
+
 int main()
 {
 	SystemInit();
@@ -57,6 +68,7 @@ int main()
 	ScreenState_t screen = screenFire;
 	SoundState_t sound = Mute;
 	uint32_t t = 0;
+	uint32_t oldFire = 0;
 
 	while(1)
 	{
@@ -64,7 +76,7 @@ int main()
 		t++;
 
 		// read buttons every x ms
-		if(t%200 == 0){
+		if(t%100 == 0){
 			buttonPress_t p = buttons_read();
 
 			if (p != last_button)
@@ -106,6 +118,7 @@ int main()
 						break;
 					default:
 						screen = screenFire;
+						animationFrameNumber = 0;
 						break;
 					}
 					break;
@@ -121,8 +134,13 @@ int main()
 		}
 
 		// Change fire frame
-		if((t%300 == 0) && (screen == screenFire)){
-			screen_write(reindeer);
+		if((t%100 == 0) && (screen == screenFire)){
+			uint32_t new = newRandom()%7;
+			while(new == oldFire){
+				new = newRandom()%7;
+			}
+			screen_write(fire + (new)*64);
+			oldFire = new;
 		}
 
 		// Change animation frame
@@ -137,7 +155,5 @@ int main()
 			animationFrameNumber = animationFrameNumber%15;
 		}
 
-
-		
 	}
 }
