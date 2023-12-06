@@ -13,6 +13,8 @@
 
 #include "buttons.h"
 
+#include "fire.h"
+
 typedef enum
 {
 	screenFire,
@@ -134,13 +136,8 @@ int main()
 		}
 
 		// Change fire frame
-		if((t%100 == 0) && (screen == screenFire)){
-			uint32_t new = newRandom()%7;
-			while(new == oldFire){
-				new = newRandom()%7;
-			}
-			screen_write(fire + (new)*64);
-			oldFire = new;
+		if((t%20 == 0) && (screen == screenFire)){
+			fire_draw();
 		}
 
 		// Change animation frame
