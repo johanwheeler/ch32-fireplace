@@ -2,6 +2,7 @@
 
 #include "funconfig.h"
 #include "stdint.h"
+#include "ch32v003fun.h"
 
 /* some bit definitions for systick regs */
 #define SYSTICK_SR_CNTIF (1 << 0)
