@@ -49,10 +49,10 @@ int main()
 	screen_init();
 
 	// init TIM2 peripheral 
-	//t2pwm_init();
+	t2pwm_init();
 
 	// start systick IRQ to run timer
-    //systick_init();
+    systick_init();
 
 	printf("initializing adc...");
 	adc_init();
@@ -128,6 +128,14 @@ int main()
 					break;
 				case buttonSound:
 					printf("Sound");
+					if (sound == Mute) {
+						music_on();
+						sound = Sound;
+					}
+					else {
+						music_off();
+						sound = Mute;	
+					}
 					break;
 				default:
 					break;
