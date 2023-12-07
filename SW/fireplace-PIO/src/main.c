@@ -28,17 +28,6 @@ typedef enum
 	Sound,
 } SoundState_t;
 
-// xorshift random
-
-unsigned int rand = 1212;
-
-unsigned int newRandom(){
-	rand ^= rand << 13;
-	rand ^= rand >> 17;
-	rand ^= rand << 5;
-	return rand;
-}
-
 int main()
 {
 	SystemInit();
