@@ -32,7 +32,7 @@ void screen_write(const uint16_t *data) {
         uint32_t green = (bits & 0x07E0) >> 3; // 6 bits green .....ggg ggg..... -> 00gggggg
         uint32_t red = (bits & 0xF800) >> 8;   // 5 bits red   rrrrr... ........ -> 000rrrrr
 
-        uint32_t expanded = (green / 16 << (16)) | (red / 16 << (8)) | (blue / 16) | 0x00000000; // divide to reduce brightness
+        uint32_t expanded = (green / 8 << (16)) | (red / 8 << (8)) | (blue / 8) | 0x00000000; // divide to reduce brightness
 
         int i;
         for (i = 0; i < 24; i++)
