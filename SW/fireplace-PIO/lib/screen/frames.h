@@ -257,7 +257,7 @@ static const uint16_t reindeer[64*13] = {
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0xc3cb, 0x0000
 };
 
-static const snowman_snow[] {
+static const snowman_snow[64*8] = {
 0x0000, 0x9ac7, 0x9ac7, 0x9ac7, 0x0000, 0x0000, 0x0000, 0x0000, 
 0x0000, 0x0000, 0x9ac7, 0x9edd, 0x0000, 0x5371, 0x0000, 0x9edd, 
 0xffff, 0x9edd, 0xffff, 0xffff, 0xaf23, 0x5371, 0xfe01, 0x5371, 
@@ -435,4 +435,4 @@ uint16_t fire[] = {
 }; 
 
 // animations, including number of frames
-animation_t animations[] = {{tree, 1}, {santa, 15}, {snowman, 3}};
+animation_t animations[] = {{tree, 1}, {santa, 15}, {snowman, 3}, {snowman_snow, 8}, {reindeer, 13}};

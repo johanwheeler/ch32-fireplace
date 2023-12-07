@@ -67,7 +67,7 @@ int main()
 		t++;
 
 		// read buttons every x ms
-		if(t%100 == 0){
+		if(t%50 == 0){
 			buttonPress_t p = buttons_read();
 
 			if (p != last_button)

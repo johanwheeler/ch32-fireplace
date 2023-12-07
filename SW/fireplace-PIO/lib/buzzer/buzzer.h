@@ -17,7 +17,7 @@
 
 volatile uint16_t ms_cnt = 0;
 volatile uint8_t k = 0;
-volatile uint8_t muted = 0;
+volatile uint8_t muted = 1;
 
 
 unsigned int freqz[] = {
