@@ -93,3 +93,7 @@ uint32_t fire_random() {
     fire_seed ^= fire_seed << 5;
     return fire_seed;
 }
+
+void fire_seed_set(uint32_t seed) {
+    fire_seed = seed;
+}
