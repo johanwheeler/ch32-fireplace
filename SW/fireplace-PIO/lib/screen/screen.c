@@ -17,17 +17,17 @@ void screen_write(const uint16_t *data) {
     while (pix != 64)
     {
         // reverse every other row
-        uint16_t byte;
+        uint16_t color;
         if (pix % 16 < 8)
         {
-            byte = *(data + (pix / 8) * 8 + 7 - pix % 16);
+            color = *(data + (pix / 8) * 8 + 7 - pix % 16);
         }
         else
         {
-            byte = *(data + pix);
+            color = *(data + pix);
         }
 
-        uint32_t bits = (uint32_t)byte;
+        uint32_t bits = (uint32_t) color;
         uint32_t blue = (bits & 0x001F) << 3;  // 5 bits blue  ............bbbbb -> 000bbbbb
         uint32_t green = (bits & 0x07E0) >> 3; // 6 bits green .....ggg ggg..... -> 00gggggg
         uint32_t red = (bits & 0xF800) >> 8;   // 5 bits red   rrrrr... ........ -> 000rrrrr
