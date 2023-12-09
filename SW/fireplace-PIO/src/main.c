@@ -51,15 +51,16 @@ int main()
 	buttons_init();
 	printf("done.\n\r");
 
+	// set seed for fire
+	fire_seed_set(adc_get());
+
 	Delay_Ms(1000);
 
-	buttonPress_t last_button = buttonNone;
 	uint8_t animationNumber = 0;
 	uint8_t animationFrameNumber = 0;
 	ScreenState_t screen = screenFire;
 	SoundState_t sound = Mute;
 	uint32_t t = 0;
-	uint32_t oldFire = 0;
 
 	while(1)
 	{
@@ -102,8 +103,26 @@ int main()
 				{
 				case screenFire:
 				case screenAnimation:
-					screen = screenPresent;
-					animationFrameNumber = 0;
+
+					if(adc_get() > 400){
+						for (int i = 0; i < 6; i++)
+						{
+							screen_write(no_present+i*64);
+							Delay_Ms(100);
+						}
+						Delay_Ms(1000);
+						for (int i = 0; i < 6; i++)
+						{
+							screen_write(no_present+(5-i)*64);
+							Delay_Ms(100);
+						}
+
+						screen = screenFire;
+						fire_reset();
+					}else{
+						screen = screenPresent;
+						animationFrameNumber = 0;
+					}
 					break;
 				default:
 					screen = screenFire;
