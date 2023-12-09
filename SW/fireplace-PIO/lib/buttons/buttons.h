@@ -118,7 +118,7 @@ buttonPress_t buttons_read() {
 buttonPress_t buttons_read_rising()
 {
 
-    int high_thr[] = {230, 220, 250};
+    int high_thr[] = {230, 220, 290};
     int low_thr[] = {170, 160, 220};
 
     switch (last_button)
