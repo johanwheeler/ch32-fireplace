@@ -115,6 +115,38 @@ buttonPress_t buttons_read() {
     return read;
 }
 
+int button_read_robust(buttonPress_t button, int thr, int iterations){
+
+    int pin;
+
+    switch (button)
+    {
+    case buttonSound:
+        pin = 2;
+        break;
+    case buttonNext:
+        pin = 3;
+        break;
+    case buttonPresent:
+        pin = 4;
+        break;
+    default:
+        return 0;
+    }
+
+    for (int i = 0; i < iterations; i++)
+    {
+        int result = MeasureTouch(3, pin, GPIO_CFGLR_IN_FLOAT);
+        if (result < thr)
+        {
+            return 0;
+        }
+        Delay_Us(100);
+    }
+
+    return 1;
+}
+
 buttonPress_t buttons_read_rising()
 {
 
@@ -124,50 +156,43 @@ buttonPress_t buttons_read_rising()
     switch (last_button)
     {
     case buttonNone:
-        // no button pressed
+        // no button pressed previously
 
-        for (int i = 0; i < 3; i++)
+        if (button_read_robust(buttonSound, high_thr[0], 3))
         {
-            int result = MeasureTouch(3, 2, GPIO_CFGLR_IN_FLOAT);
-            if (result > high_thr[0])
-            {
-                last_button = buttonSound;
-                return buttonSound;
-            }
-            result = MeasureTouch(3, 3, GPIO_CFGLR_IN_FLOAT);
-            if (result > high_thr[1])
-            {
-                last_button = buttonNext;
-                return buttonNext;
-            }
-            result = MeasureTouch(3, 4, GPIO_CFGLR_IN_FLOAT);
-            if (result > high_thr[2])
-            {
-                last_button = buttonPresent;
-                return buttonPresent;
-            }
+            last_button = buttonSound;
+            return buttonSound;
         }
-
+        if (button_read_robust(buttonNext, high_thr[1], 3))
+        {
+            last_button = buttonNext;
+            return buttonNext;
+        }
+        if (button_read_robust(buttonPresent, high_thr[2], 3))
+        {
+            last_button = buttonPresent;
+            return buttonPresent;
+        }
+    
         return buttonNone;
 
-        break;
     case buttonSound:
-        // sound button pressed
-        if (MeasureTouch(3, 2, GPIO_CFGLR_IN_FLOAT) < low_thr[0])
+        // sound button pressed previously
+        if (!button_read_robust(buttonSound, low_thr[0], 3))
         {
             last_button = buttonNone;
         }
         break;
     case buttonNext:
-        // next button pressed
-        if (MeasureTouch(3, 3, GPIO_CFGLR_IN_FLOAT) < low_thr[1])
+        // next button pressed previously
+        if (!button_read_robust(buttonNext, low_thr[1], 3))
         {
             last_button = buttonNone;
         }
         break;
     case buttonPresent:
-        // present button pressed
-        if (MeasureTouch(3, 4, GPIO_CFGLR_IN_FLOAT) < low_thr[2])
+        // present button pressed previously
+        if (!button_read_robust(buttonPresent, low_thr[2], 3))
         {
             last_button = buttonNone;
         }
