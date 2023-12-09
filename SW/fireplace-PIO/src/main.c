@@ -17,6 +17,8 @@
 
 #include "wavetable.h"
 
+#include "random.h"
+
 typedef enum
 {
 	screenFire,
