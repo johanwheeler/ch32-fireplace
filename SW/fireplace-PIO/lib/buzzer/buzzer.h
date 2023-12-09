@@ -121,7 +121,7 @@ void t2pwm_init(void)
     TIM2->SWEVGR |= TIM_UG;
 
     // Enable TIM2
-    TIM2->CTLR1 |= TIM_CEN;
+    //TIM2->CTLR1 |= TIM_CEN;
 }
 
 /*
@@ -155,7 +155,8 @@ void tone(uint32_t freq) {
         TIM2->CH3CVR = (uint16_t) 1024;
 
         // Initiate timer update
-        TIM2->SWEVGR |= TIM_UG;             
+        TIM2->SWEVGR |= TIM_UG;
+        TIM2->CCER &= ~(TIM_CC3E | (TIM_CC3P & TIM2_DEFAULT));
         return;
     }
 
@@ -167,6 +168,7 @@ void tone(uint32_t freq) {
 
     // Initiate timer update     
     TIM2->SWEVGR |= TIM_UG;
+    TIM2->CCER |= TIM_CC3E | (TIM_CC3P & TIM2_DEFAULT);
 }
 
 
@@ -178,6 +180,7 @@ void crackling_on(void) {
 void crackling_off(void) {
     crack = 0;
     ms_cnt = 0;
+    k = 0;
 }
 
 void music_off(void) {
@@ -232,7 +235,7 @@ void SysTick_Handler(void)
             crack_seed ^= crack_seed << 5;
 
             if (ms_cnt == 1) {
-                dur = crack_seed % 500;
+                dur = crack_seed % 1000;
                 freq = (crack_seed % 200) + 550;
                 tone(freq);
                 return;

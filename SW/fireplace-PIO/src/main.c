@@ -48,6 +48,8 @@ int main()
 	// start systick IRQ to run timer
     systick_init();
 
+	crackling_on();
+
 	printf("initializing adc...");
 	adc_init();
 	printf("done.\n\r");
@@ -94,18 +96,17 @@ int main()
 					printf("animation number: %d", animationNumber);
 					break;
 				case screenFire:
+					crackling_off();
 					screen = screenAnimation;
 					animationNumber = 0;
 					animationFrameNumber = 0;
 					break;
 				case screenPresent:
-					screen = screenFire;
-					fire_reset();			
-					break;
 				case screenTreeFade:
 					screen = screenFire;
 					fire_reset();
-					break;	
+					crackling_on();		
+					break;
 				}
 			break;
 			case buttonPresent:
@@ -113,6 +114,7 @@ int main()
 				switch (screen)
 				{
 				case screenFire:
+					crackling_off();
 				case screenAnimation:
 
 					if(adc_get() > 400){
@@ -130,6 +132,7 @@ int main()
 
 						screen = screenFire;
 						fire_reset();
+						crackling_on();
 					}else{
 						for (int i = 0; i < 12; i++)
 						{
@@ -144,6 +147,7 @@ int main()
 				default:
 					screen = screenFire;
 					fire_reset();
+					crackling_on();
 					break;
 				}
 				break;
