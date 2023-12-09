@@ -131,6 +131,12 @@ int main()
 						screen = screenFire;
 						fire_reset();
 					}else{
+						for (int i = 0; i < 12; i++)
+						{
+							screen_write(present+i*64);
+							Delay_Ms(100+500*(i%2));
+						}
+
 						screen = screenPresent;
 						animationFrameNumber = 0;
 					}
@@ -170,9 +176,9 @@ int main()
 		}
 
 		if((t%250 == 0) && (screen == screenPresent)){
-			screen_write(santa+animationFrameNumber*64);
+			screen_write(present+(animationFrameNumber+10)*64);
 			animationFrameNumber++;
-			animationFrameNumber = animationFrameNumber%15;
+			animationFrameNumber = animationFrameNumber%2;
 		}
 
 		if((t%40 == 0) && (screen == screenTreeFade)) {
