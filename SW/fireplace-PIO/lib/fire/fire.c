@@ -1,4 +1,5 @@
 #include "fire.h"
+#include "random.h"
 
 // Fire parameters
 #define UPPER_DECAY_DIV 3
@@ -44,8 +45,8 @@ void fire_draw() {
 
     // last row, add random new temperature
     for(int i = 0; i < 8; i++) {
-        if(fire_random()%distribution[i] == 0){
-            fire_temps[56+i] = fire_random()%SOURCE_VARIANCE + SOURCE_MEAN;
+        if(random()%distribution[i] == 0){
+            fire_temps[56+i] = random()%SOURCE_VARIANCE + SOURCE_MEAN;
         }else{
             fire_temps[56+i] -=  fire_temps[56+i] / SOURCE_DECAY_DIV;
         }
@@ -86,14 +87,3 @@ void fire_reset(){
     }
 }
 
-uint32_t fire_random() {
-    //xorshift 
-    fire_seed ^= fire_seed << 13;
-    fire_seed ^= fire_seed >> 17;
-    fire_seed ^= fire_seed << 5;
-    return fire_seed;
-}
-
-void fire_seed_set(uint32_t seed) {
-    fire_seed = seed;
-}

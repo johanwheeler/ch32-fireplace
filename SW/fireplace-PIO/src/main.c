@@ -56,8 +56,8 @@ int main()
 	buttons_init();
 	printf("done.\n\r");
 
-	// set seed for fire
-	fire_seed_set(adc_get());
+	// set seed for RNG
+	random_seed(adc_get());
 
 	Delay_Ms(1000);
 

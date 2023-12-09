@@ -11,6 +11,6 @@ uint32_t random() {
     return seed;
 }
 
-void seed_set(uint32_t seed) {
+void random_seed(uint32_t seed) {
     seed = seed;
 }
