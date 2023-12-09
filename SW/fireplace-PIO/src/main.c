@@ -15,11 +15,14 @@
 
 #include "fire.h"
 
+#include "wavetable.h"
+
 typedef enum
 {
 	screenFire,
 	screenAnimation,
 	screenPresent,
+	screenTreeFade
 } ScreenState_t;
 
 typedef enum
@@ -60,6 +63,7 @@ int main()
 	SoundState_t sound = Mute;
 	uint32_t t = 0;
 	uint32_t oldFire = 0;
+	uint8_t sine_idx = 0;
 
 	while(1)
 	{
@@ -80,8 +84,9 @@ int main()
 					animationNumber++;
 					animationFrameNumber = 0;
 					if(animationNumber >= (sizeof(animations)/sizeof(animation_t))){
-						fire_reset();
-						screen = screenFire;
+						//fire_reset();
+						//screen = screenFire;
+						screen = screenTreeFade;
 					}
 					printf("animation number: %d", animationNumber);
 					break;
@@ -94,6 +99,10 @@ int main()
 					screen = screenFire;
 					fire_reset();			
 					break;
+				case screenTreeFade:
+					screen = screenFire;
+					fire_reset();
+					break;	
 				}
 			break;
 			case buttonPresent:
@@ -143,6 +152,47 @@ int main()
 			screen_write(santa+animationFrameNumber*64);
 			animationFrameNumber++;
 			animationFrameNumber = animationFrameNumber%15;
+		}
+
+		if((t%40 == 0) && (screen == screenTreeFade)) {
+
+			for(int i = 0; i < 5; i++) {
+				uint8_t brightness = sine_table[(sine_idx+i*10)%64]+100;
+				uint32_t color = tree_colors[i];
+				
+				uint32_t blue = (color & 0x001F);  // 5 bits blue  ............bbbbb -> 000bbbbb
+				uint32_t green = (color & 0x07E0) >> 5; // 6 bits green .....ggg ggg..... -> 00gggggg
+				uint32_t red = (color & 0xF800) >> 11;   // 5 bits red   rrrrr... ........ -> 000rrrrr
+
+				red = red*brightness >> 8;
+				green = green*brightness >> 8;
+				blue = blue*brightness >> 8;
+
+				uint16_t faded = red << 11 | green << 5 | blue;
+
+				tree[tree_idx[i]] = faded;
+			}
+
+			for (int i = 0; i < 10; i++) {
+				uint8_t brightness = sine_table[(sine_idx+i*5)%64]+100;
+				
+				uint32_t color = (uint16_t)tree_colors[5];
+				
+				uint32_t blue = (color & 0x001F);  // 5 bits blue  ............bbbbb -> 000bbbbb
+				uint32_t green = (color & 0x07E0) >> 5; // 6 bits green .....ggg ggg..... -> 00gggggg
+				uint32_t red = (color & 0xF800) >> 11;   // 5 bits red   rrrrr... ........ -> 000rrrrr
+
+				red = red*brightness >> 8;
+				green = green*brightness >> 8;
+				blue = blue*brightness >> 8;
+
+				uint16_t faded = red << 11 | green << 5 | blue;
+				tree[tree_idx[5+i]] = faded;
+			}
+
+			sine_idx++;
+			sine_idx = sine_idx % 64; 
+			screen_write(tree);
 		}
 
 	}
