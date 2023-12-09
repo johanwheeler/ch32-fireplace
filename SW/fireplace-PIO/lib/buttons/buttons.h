@@ -12,6 +12,8 @@ typedef enum {
     buttonPresent = 0x4,
 } buttonPress_t;
 
+buttonPress_t last_button = buttonNone;
+
 void EXTI7_0_IRQHandler(void) __attribute__((interrupt));
 void EXTI7_0_IRQHandler(void)
 {
@@ -57,7 +59,7 @@ int MeasureTouch(int portno, int pin, int pu_mode)
     asm volatile(".balign 4; c.nop");
     port->CFGLR = releasemode;
     starttime = SysTick->CNT;
-    endtime = starttime - 1;
+    endtime = starttime + 384;
     port->BSHR = 1 << (pin);
 
 // Allow up to 384 cycles for the pin to change.
@@ -111,6 +113,68 @@ buttonPress_t buttons_read() {
     }
 
     return read;
+}
+
+buttonPress_t buttons_read_rising()
+{
+
+    int high_thr[] = {230, 220, 250};
+    int low_thr[] = {170, 160, 220};
+
+    switch (last_button)
+    {
+    case buttonNone:
+        // no button pressed
+
+        for (int i = 0; i < 3; i++)
+        {
+            int result = MeasureTouch(3, 2, GPIO_CFGLR_IN_FLOAT);
+            if (result > high_thr[0])
+            {
+                last_button = buttonSound;
+                return buttonSound;
+            }
+            result = MeasureTouch(3, 3, GPIO_CFGLR_IN_FLOAT);
+            if (result > high_thr[1])
+            {
+                last_button = buttonNext;
+                return buttonNext;
+            }
+            result = MeasureTouch(3, 4, GPIO_CFGLR_IN_FLOAT);
+            if (result > high_thr[2])
+            {
+                last_button = buttonPresent;
+                return buttonPresent;
+            }
+        }
+
+        return buttonNone;
+
+        break;
+    case buttonSound:
+        // sound button pressed
+        if (MeasureTouch(3, 2, GPIO_CFGLR_IN_FLOAT) < low_thr[0])
+        {
+            last_button = buttonNone;
+        }
+        break;
+    case buttonNext:
+        // next button pressed
+        if (MeasureTouch(3, 3, GPIO_CFGLR_IN_FLOAT) < low_thr[1])
+        {
+            last_button = buttonNone;
+        }
+        break;
+    case buttonPresent:
+        // present button pressed
+        if (MeasureTouch(3, 4, GPIO_CFGLR_IN_FLOAT) < low_thr[2])
+        {
+            last_button = buttonNone;
+        }
+        break;
+    }
+
+    return buttonNone;
 }
 
 #endif

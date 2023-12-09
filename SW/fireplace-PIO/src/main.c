@@ -67,71 +67,65 @@ int main()
 		t++;
 
 		// read buttons every x ms
-		if(t%50 == 0){
-			buttonPress_t p = buttons_read();
+		if(t%100 == 0){
+			buttonPress_t p = buttons_read_rising();
 
-			if (p != last_button)
+			switch (p)
 			{
-			    int switchScreen = 0;
-				ScreenState_t newScreen = screenFire;
-				switch (p)
+			case buttonNext:
+				printf("Next");
+				switch (screen)
 				{
-				case buttonNext:
-					printf("Next");
-					switch (screen)
-					{
-					case screenAnimation:
-						animationNumber++;
-						animationFrameNumber = 0;
-						if(animationNumber >= (sizeof(animations)/sizeof(animation_t))){
-							fire_reset();
-							screen = screenFire;
-						}
-						printf("animation number: %d", animationNumber);
-						break;
-					case screenFire:
-						screen = screenAnimation;
-						animationNumber = 0;
-						animationFrameNumber = 0;
-						break;
-					case screenPresent:
-						screen = screenFire;
-						fire_reset();			
-						break;
-					}
-				break;
-				case buttonPresent:
-					printf("Present");
-					switch (screen)
-					{
-					case screenFire:
-					case screenAnimation:
-						screen = screenPresent;
-						animationFrameNumber = 0;
-						break;
-					default:
-						screen = screenFire;
+				case screenAnimation:
+					animationNumber++;
+					animationFrameNumber = 0;
+					if(animationNumber >= (sizeof(animations)/sizeof(animation_t))){
 						fire_reset();
-						break;
+						screen = screenFire;
 					}
+					printf("animation number: %d", animationNumber);
 					break;
-				case buttonSound:
-					printf("Sound");
-					if (sound == Mute) {
-						music_on();
-						sound = Sound;
-					}
-					else {
-						music_off();
-						sound = Mute;	
-					}
+				case screenFire:
+					screen = screenAnimation;
+					animationNumber = 0;
+					animationFrameNumber = 0;
 					break;
-				default:
+				case screenPresent:
+					screen = screenFire;
+					fire_reset();			
 					break;
 				}
-
-				last_button = p;
+			break;
+			case buttonPresent:
+				printf("Present");
+				switch (screen)
+				{
+				case screenFire:
+				case screenAnimation:
+					screen = screenPresent;
+					animationFrameNumber = 0;
+					break;
+				default:
+					screen = screenFire;
+					fire_reset();
+					break;
+				}
+				break;
+			case buttonSound:
+				printf("Sound");
+				if (sound == Mute) {
+					music_on();
+					sound = Sound;
+				}
+				else {
+					music_off();
+					sound = Mute;	
+				}
+				break;
+			default:
+				break;
 			}
+
 		}
 
 		// Change fire frame
