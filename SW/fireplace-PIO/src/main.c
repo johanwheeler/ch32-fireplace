@@ -114,6 +114,8 @@ int main()
 					crackling_off();
 				case screenAnimation:
 
+					change_song(3);
+
 					if(adc_get() > 400){
 						for (int i = 0; i < 6; i++)
 						{

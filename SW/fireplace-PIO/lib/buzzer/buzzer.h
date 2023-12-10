@@ -63,11 +63,11 @@ const note_tt * songs[] = {
 const uint8_t sn = sizeof(note_tt);
 
 const uint8_t song_lengths[] = {
-  sizeof(last_christmas)/sn,
-  sizeof(wish_merry)/sn,
-  sizeof(silent)/sn,
+  sizeof(last_christmas)/sn,    // jumping santa
+  sizeof(wish_merry)/sn,        // Snowman
+  sizeof(silent)/sn,            // Reindeer
   sizeof(jingle)/sn,
-  sizeof(feliz)/sn,
+  sizeof(feliz)/sn,             // Tree
   //sizeof(i_want)/sn,
   //sizeof(rockin)/sn,
 };
