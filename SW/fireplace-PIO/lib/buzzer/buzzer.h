@@ -236,7 +236,7 @@ void SysTick_Handler(void)
 
             if (ms_cnt == 1) {
                 dur = crack_seed % 1000;
-                freq = (crack_seed % 200) + 550;
+                freq = (crack_seed % 300) + 550;
                 tone(freq);
                 return;
             }
