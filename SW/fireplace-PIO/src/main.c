@@ -90,6 +90,7 @@ int main()
 				switch (oldscreen)
 				{
 				case screenAnimation:
+
 					animationNumber++;
 					animationFrameNumber = 0;
 					change_song(animationNumber);
@@ -211,13 +212,17 @@ int main()
 		if((t%40 == 0) && (screen == screenTreeFade)) {
 
 			for(int i = 0; i < 5; i++) {
+				// wavetable is [0, 155], offset by 100 for [100,255] sine
+				// phase offset by i*10 for offset fade order
 				uint8_t brightness = sine_table[(sine_idx+i*10)%64]+100;
 				uint32_t color = tree_colors[i];
 				
-				uint32_t blue = (color & 0x001F);  // 5 bits blue  ............bbbbb -> 000bbbbb
+				uint32_t blue = (color & 0x001F);  		// 5 bits blue  ............bbbbb -> 000bbbbb
 				uint32_t green = (color & 0x07E0) >> 5; // 6 bits green .....ggg ggg..... -> 00gggggg
-				uint32_t red = (color & 0xF800) >> 11;   // 5 bits red   rrrrr... ........ -> 000rrrrr
+				uint32_t red = (color & 0xF800) >> 11;  // 5 bits red   rrrrr... ........ -> 000rrrrr
 
+				// Scale by normalized brightness
+				// brightness >> 8 = [0, 1]
 				red = red*brightness >> 8;
 				green = green*brightness >> 8;
 				blue = blue*brightness >> 8;
