@@ -17,7 +17,10 @@
 
 volatile uint16_t ms_cnt = 0;
 volatile uint8_t k = 0;
-volatile uint8_t muted = 1;
+volatile uint8_t muted = 0;
+volatile uint32_t crack_seed = 0xbadc0de;
+volatile uint8_t crack = 1;
+volatile uint8_t pause = 0;
 
 
 unsigned int freqz[] = {
@@ -30,6 +33,9 @@ typedef struct
     uint8_t note;
     uint16_t duration;
 } note_tt;
+
+uint16_t dur = 0;
+uint16_t freq = 0;
 
 const note_tt last_christmas[] = {{0,0},{17,737},{0,64},{17,438},{0,93},{15,108},{0,427},{10,60},{0,206},{17,193},{0,73},{17,202},{0,65},{19,161},{0,107},{15,578},{0,222},{12,191},{0,75},{12,165},{0,97},{17,214},{0,51},{17,198},{0,70},{19,180},{0,354},{15,571},{0,225},{12,64},{0,204},{14,247},{0,20},{15,266},{0,0},{14,208},{0,60},{12,880},{0,455},{19,681},{0,120},{17,806},{0,261},{12,77},{0,191},{19,197},{0,66},{20,194},{0,72},{19,166},{0,101},{17,697},{0,376},{15,63},{0,202},{14,246},{0,21},{15,207},{0,58},{14,63},{0,207},{14,412},{0,120},{15,90},{0,446},{14,218},{0,318},{10,936}, {0,1000},};
 const note_tt jingle[] = {{0,0},{20,105},{0,233},{20,1},{0,0},{20,1},{0,168},{20,121},{0,217},{20,113},{0,55},{19,90},{0,248},{19,66},{0,103},{19,87},{0,251},{19,84},{0,84},{17,309},{0,29},{19,108},{0,60},{17,143},{0,195},{12,381},{0,127},{10,129},{0,39},{10,92},{0,76},{13,63},{0,105},{15,74},{0,95},{17,198},{0,140},{19,71},{0,97},{17,158},{0,180},{12,540},{0,137},{15,360},{0,148},{17,328},{0,10},{19,79},{0,90},{17,119},{0,219},{13,368},{0,140},{13,148},{0,360},{13,116},{0,52},{10,137},{0,201},{12,76},{0,92},{13,95},{0,243},{15,354},{0,153},{17,338},{0,169},{15,121},{0,47},{10,100},{0,238},{12,74},{0,95},{13,105},{0,233},{15,296},{0,211},{15,1},{0,0},{15,1},{0,168},{15,137},{0,201},{15,84},{0,84},{17,227},{0,280},{17,296},{0,211},{19,119},{0,219},{17,111},{0,58},{15,105},{0,233},{20,582},{0,1000}};
@@ -109,7 +115,7 @@ void t2pwm_init(void)
     TIM2->CTLR1 |= TIM_ARPE;
 
     // Enable Channel outputs, set default state (based on TIM2_DEFAULT)
-    //TIM2->CCER |= TIM_CC3E | (TIM_CC3P & TIM2_DEFAULT);
+    TIM2->CCER |= TIM_CC3E | (TIM_CC3P & TIM2_DEFAULT);
 
     // initialize counter
     TIM2->SWEVGR |= TIM_UG;
@@ -149,7 +155,8 @@ void tone(uint32_t freq) {
         TIM2->CH3CVR = (uint16_t) 1024;
 
         // Initiate timer update
-        TIM2->SWEVGR |= TIM_UG;             
+        TIM2->SWEVGR |= TIM_UG;
+        TIM2->CCER &= ~(TIM_CC3E | (TIM_CC3P & TIM2_DEFAULT));
         return;
     }
 
@@ -161,6 +168,19 @@ void tone(uint32_t freq) {
 
     // Initiate timer update     
     TIM2->SWEVGR |= TIM_UG;
+    TIM2->CCER |= TIM_CC3E | (TIM_CC3P & TIM2_DEFAULT);
+}
+
+
+void crackling_on(void) {
+    crack = 1;
+    ms_cnt = 0;
+}
+
+void crackling_off(void) {
+    crack = 0;
+    ms_cnt = 0;
+    k = 0;
 }
 
 void music_off(void) {
@@ -205,8 +225,35 @@ void SysTick_Handler(void)
     SysTick->SR = 0;
 
     if(!muted) {
-        // increment milisecond counter 
+        // increment milisecond counter
         ms_cnt++;
+
+        if (crack) {
+
+            crack_seed ^= crack_seed << 13;
+            crack_seed ^= crack_seed >> 17;
+            crack_seed ^= crack_seed << 5;
+
+            if (ms_cnt == 1) {
+                dur = crack_seed % 1000;
+                freq = (crack_seed % 300) + 550;
+                tone(freq);
+                return;
+            }
+
+            if (ms_cnt > 3) {
+                tone(0);
+            }
+
+            if (ms_cnt > dur + 10) {
+                ms_cnt = 0;
+            }
+
+
+            return;
+        }
+        
+
 
         if (ms_cnt > curr_song[k].duration)
         {

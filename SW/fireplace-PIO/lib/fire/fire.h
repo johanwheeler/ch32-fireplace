@@ -5,6 +5,6 @@
 
 void fire_draw();
 
-uint32_t fire_random();
+void fire_reset();
 
 #endif
