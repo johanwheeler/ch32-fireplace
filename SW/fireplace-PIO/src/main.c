@@ -114,10 +114,12 @@ int main()
 				case screenFire:
 					crackling_off();
 				case screenAnimation:
+				case screenTreeFade:
 
-					change_song(3);
+					
 
 					if(adc_get() > 400){
+						change_song(5);
 						for (int i = 0; i < 6; i++)
 						{
 							screen_write(no_present+i*64);
@@ -133,6 +135,7 @@ int main()
 						newscreen = screenFire;
 						oldscreen = screenPresent;
 					}else{
+						change_song(3);
 						for (int i = 0; i < 10; i++)
 						{
 							screen_write(present+i*64);

@@ -27,7 +27,7 @@ uint16_t tree[64] = {
 };
 
 static const uint16_t tree_idx[15] = {16, 26, 28, 40, 43, 14, 21, 22, 30, 31, 38, 39, 45, 46, 54};
-static const uint16_t tree_colors[6] = {0xff80, 0x05bd, 0xe135, 0xfbe0, 0xe8e4, 0xfe01};
+static const uint16_t tree_colors[6] = {0xff80, 0x05bd, 0xe135, 0xfbe0, 0xe8e4, 0xffe0};
 
 
 static const uint16_t santa[15*64] = {
