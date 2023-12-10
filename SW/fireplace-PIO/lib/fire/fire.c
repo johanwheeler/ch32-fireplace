@@ -11,8 +11,6 @@
 #define COLOR_REDUCTION 4
 
 // Fire state
-uint32_t fire_seed = 0x12345678;
-
 uint8_t fire_temps[64] = {
 0, 0, 0, 0, 0, 0, 0, 0,
 0, 0, 0, 0, 0, 0, 0, 0,

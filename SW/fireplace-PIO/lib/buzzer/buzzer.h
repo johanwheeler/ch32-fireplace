@@ -51,15 +51,12 @@ const note_tt rickroll[] = {{0,0},{6,824},{0,75},{8,825},{0,74},{1,550},{0,49},{
 
 const note_tt * songs[] = {
   last_christmas,
-  jingle,
-  i_want, 
-  rockin,
-  feliz,
   wish_merry,
   silent,
-  funky,
-  groove,
-  rickroll, 
+  jingle,
+  feliz,
+  //i_want,
+  //rockin,
 };
 
 
@@ -67,15 +64,12 @@ const uint8_t sn = sizeof(note_tt);
 
 const uint8_t song_lengths[] = {
   sizeof(last_christmas)/sn,
-  sizeof(jingle)/sn,
-  sizeof(i_want)/sn,
-  sizeof(rockin)/sn,
-  sizeof(feliz)/sn,
   sizeof(wish_merry)/sn,
   sizeof(silent)/sn,
-  sizeof(funky)/sn,
-  sizeof(groove)/sn,
-  sizeof(rickroll)/sn
+  sizeof(jingle)/sn,
+  sizeof(feliz)/sn,
+  //sizeof(i_want)/sn,
+  //sizeof(rockin)/sn,
 };
 
 

@@ -77,41 +77,38 @@ int main()
 
 		// read buttons every x ms
 		if(t%100 == 0){
+
+			ScreenState_t oldscreen = screen;
+			ScreenState_t newscreen = screen;
+
 			buttonPress_t p = buttons_read_rising();
 
 			switch (p)
 			{
 			case buttonNext:
 				printf("Next");
-				switch (screen)
+				switch (oldscreen)
 				{
 				case screenAnimation:
 					animationNumber++;
 					animationFrameNumber = 0;
+					change_song(animationNumber);
 					if(animationNumber >= (sizeof(animations)/sizeof(animation_t))){
-						//fire_reset();
-						//screen = screenFire;
-						screen = screenTreeFade;
+						newscreen = screenTreeFade;
 					}
-					printf("animation number: %d", animationNumber);
 					break;
 				case screenFire:
-					crackling_off();
-					screen = screenAnimation;
-					animationNumber = 0;
-					animationFrameNumber = 0;
+					newscreen = screenAnimation;
 					break;
 				case screenPresent:
 				case screenTreeFade:
-					screen = screenFire;
-					fire_reset();
-					crackling_on();		
+					newscreen = screenFire;	
 					break;
 				}
 			break;
 			case buttonPresent:
 				printf("Present");
-				switch (screen)
+				switch (oldscreen)
 				{
 				case screenFire:
 					crackling_off();
@@ -130,24 +127,26 @@ int main()
 							Delay_Ms(100);
 						}
 
-						screen = screenFire;
-						fire_reset();
-						crackling_on();
+						newscreen = screenFire;
+						oldscreen = screenPresent;
 					}else{
-						for (int i = 0; i < 12; i++)
+						for (int i = 0; i < 10; i++)
 						{
 							screen_write(present+i*64);
 							Delay_Ms(100+500*(i%2));
 						}
 
-						screen = screenPresent;
-						animationFrameNumber = 0;
+						for (int i = 0; i < 11; i++)
+						{
+							screen_write(present+(i+10)*64);
+							Delay_Ms(300);
+						}
+
+						newscreen = screenPresent;
 					}
 					break;
 				default:
-					screen = screenFire;
-					fire_reset();
-					crackling_on();
+					newscreen = screenFire;
 					break;
 				}
 				break;
@@ -166,6 +165,36 @@ int main()
 				break;
 			}
 
+			// transition to new screen
+			if(oldscreen != newscreen){
+				switch (newscreen)
+				{
+				case screenFire:
+					crackling_on();
+					fire_reset();
+					break;
+				case screenAnimation:
+					crackling_off();
+					animationNumber = 0;
+					animationFrameNumber = 0;
+					change_song(0);
+					break;
+				case screenPresent:
+					//crackling_off();
+					animationFrameNumber = 0;
+					break;
+				case screenTreeFade:
+					crackling_off();
+					change_song(4); //feliz
+					sine_idx = 0;
+					break;
+				default:
+					break;
+				}
+
+				screen = newscreen;
+
+			}
 		}
 
 		// Change fire frame
@@ -177,12 +206,6 @@ int main()
 		if((t%250 == 0) && (screen == screenAnimation)){
 			screen_write(animations[animationNumber].data + animationFrameNumber*64);
 			animationFrameNumber = (animationFrameNumber+1) % animations[animationNumber].numframes;
-		}
-
-		if((t%250 == 0) && (screen == screenPresent)){
-			screen_write(present+(animationFrameNumber+10)*64);
-			animationFrameNumber++;
-			animationFrameNumber = animationFrameNumber%2;
 		}
 
 		if((t%40 == 0) && (screen == screenTreeFade)) {
