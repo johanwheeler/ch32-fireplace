@@ -196,10 +196,12 @@ void music_on(void) {
 }
 
 void change_song(uint8_t song_idx) {
-    music_off();
+    //music_off();
     curr_song = songs[song_idx];
     note_end = &song_lengths[song_idx];
-    music_on();
+    k = 0;
+    ms_cnt = 0;
+    //music_on();
 }
 
 /*
