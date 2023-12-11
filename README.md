@@ -1,6 +1,8 @@
-# Merry christmas!
+# Merry Christmas!
 
-And a happy new year! Here you will find some instructions for the christmas card, as well as technical details.
+And a happy new year! Here you will find some instructions for the christmas card, as well as some technical details.
+
+https://github.com/johanwheeler/ch32-fireplace/assets/45564940/a2e65534-c451-412c-9a83-9337bf3cca4e
 
 ## Instructions
 
@@ -23,24 +25,24 @@ For fellow nerds.
 
 ### Mechanical design
 
-The initial shape was made in fusion 360, together with the grid and acryllic piece. The outlines were then imported into inkscape, where the graphics were designed.  
+The initial shape was made in Fusion360, together with the grid and acrylic piece. The outlines were then imported into Inkscape, where the graphics were designed.  
 
 ### Electrical design
 
-The outlines were imported into kicad, where the PCBs were designed. 
+The outlines were imported into Kicad, where the PCBs were designed. 
 
 The main electrical components are:
 
- - ch32v003 RISC-V microcontroller
- - Neopixel LED matrix with 64 pixels
+ - CH32V003 RISC-V microcontroller
+ - WS2812B LED matrix with 64 pixels
  - Buzzer for sound
  - Capacitive touch buttons
- - photoresistor
+ - Photoresistor
 
 These are distributed on 3 PCBs for a 3D effect:
 
- - Back PCB has most of the components including MCU, Buzzer, LEDs and programming headers.
- - Middle PCB has USB-C port and capacitive buttons. Exposed FR-4 is used as a diffuser for the LEDs. 
+ - Back PCB has most of the components including MCU, Buzzer, LEDs, and programming headers.
+ - Middle PCB has a USB-C port and capacitive buttons. Exposed FR-4 is used as a diffuser for the LEDs. 
  - Front PCB just looks nice.
 
 ### Assembly
@@ -58,14 +60,14 @@ The project is assembled in several steps that need to be followed in the correc
 
 ### Code
 
-All code was written in plain C using the ch32v003fun framework, and can be compiled using platformIO. The main code can be found in [src/main.c](SW/fireplace-PIO/src/main.c), and several peripheral drivers and functions can be found in the [lib](SW/fireplace-PIO/lib/) folder. 
+All code was written in plain C using the ch32v003fun dev environment and can be compiled using PlatformIO. The main code can be found in [src/main.c](SW/fireplace-PIO/src/main.c), and several peripheral drivers and functions can be found in the [lib](SW/fireplace-PIO/lib/) folder. 
 
-## Credits
+## Contributions
 
 The people who made this:
 
  - Johan Wheeler (@johanwheeler): Electrical design, mechanical design, assembly.
- - Daniel Quach (@Muoshy): Electrical design, programming, animations.
+ - Daniel Quach (@Muoshy): Project lead, electrical design, programming, animations, soldering.
  - Adam Anderson (@adaand00): Mechanical design, assembly, programming, animations. 
 
 Additional "thank you"s to:
