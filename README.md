@@ -1,6 +1,8 @@
 # Merry Christmas!
 
-And a happy new year! Here you will find some instructions for the christmas card, as well as some technical details.
+And a happy new year! Here you will find some instructions for the christmas card, as well as some technical details. 
+
+[See past years' cards!](https://github.com/Muoshy/christmas-cards)
 
 https://github.com/johanwheeler/ch32-fireplace/assets/45564940/a2e65534-c451-412c-9a83-9337bf3cca4e
 
