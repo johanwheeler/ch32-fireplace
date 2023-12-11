@@ -4,6 +4,10 @@
 
   (paper "A3")
 
+  (title_block
+    (title "CH32 Fireplace Back PCB")
+  )
+
   (lib_symbols
     (symbol "Back-lib:CH32V003F4U6" (in_bom yes) (on_board yes)
       (property "Reference" "U" (at 15.24 -19.05 0)
