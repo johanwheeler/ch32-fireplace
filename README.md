@@ -2,6 +2,8 @@
 
 And a happy new year! Here you will find some instructions for the christmas card, as well as some technical details.
 
+https://github.com/johanwheeler/ch32-fireplace/assets/45564940/a2e65534-c451-412c-9a83-9337bf3cca4e
+
 ## Instructions
 
 USB-C: Connect to any USB-C power source. 
