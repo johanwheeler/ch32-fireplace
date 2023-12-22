@@ -4,6 +4,8 @@ And a happy new year! Here you will find some instructions for the christmas car
 
 https://github.com/johanwheeler/ch32-fireplace/assets/45564940/a2e65534-c451-412c-9a83-9337bf3cca4e
 
+[Longer demo here](https://photos.app.goo.gl/RaVmtgkoQ25G9iBE6)
+
 # Instructions
 
 If your card has white plastic in front of the screen, remove the front plate and peel the film, then connect to any USB-C power source. The stockings above the fire are actually touch buttons! Press firmly to interact.
