@@ -4,7 +4,7 @@ And a happy new year! Here you will find some instructions for the christmas car
 
 https://github.com/johanwheeler/ch32-fireplace/assets/45564940/a2e65534-c451-412c-9a83-9337bf3cca4e
 
-[Longer demo here](https://photos.app.goo.gl/RaVmtgkoQ25G9iBE6)
+[Longer demo here](https://photos.app.goo.gl/RaVmtgkoQ25G9iBE6), [Short Hackaday article](https://hackaday.com/2024/01/02/an-animated-led-fireplace-powered-by-the-ch32v003/)
 
 # Instructions
 
