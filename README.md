@@ -71,7 +71,7 @@ This was a really fun project to do, and we learned a lot about small-scale prod
 The people who made this:
 
  - Johan Wheeler (@johanwheeler): Electrical design, mechanical design, assembly.
- - Daniel Quach (@Muoshy): Project lead, electrical design, programming, animations, soldering.
+ - Daniel Quach (@BasementCircuits): Project lead, electrical design, programming, animations, soldering.
  - Adam Anderson (@adaand00): Mechanical design, assembly, programming, animations. 
 
 [See past years' cards!](https://github.com/Muoshy/christmas-cards)
